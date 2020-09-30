@@ -29,7 +29,7 @@ class Label(Widget):
         ----------
         text : str
             The label.
-        rotattion : int = 0
+        rotation : int = 0
             The rotation of the label.
         **kwargs : dict
             Keyword arguments to pass to TextVisual
