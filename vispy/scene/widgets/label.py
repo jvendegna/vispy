@@ -1,3 +1,4 @@
+"""Label widget class."""
 # -*- coding: utf-8 -*-
 # -----------------------------------------------------------------------------
 # Copyright (c) Vispy Development Team. All Rights Reserved.
@@ -9,7 +10,7 @@ from ...visuals import TextVisual
 
 
 class Label(Widget):
-    """Label widget
+    """Label widget.
 
     Parameters
     ----------
@@ -20,15 +21,27 @@ class Label(Widget):
     **kwargs : dict
         Keyword arguments to pass to TextVisual.
     """
+
     def __init__(self, text, rotation=0., **kwargs):
+        """Init method.
+
+        Parameters
+        ----------
+        text : str
+            The label.
+        rotattion : int = 0
+            The rotation of the label.
+        **kwargs : dict
+            Keyword arguments to pass to TextVisual
+        """
         self._text_visual = TextVisual(text=text, rotation=rotation, **kwargs)
         self.rotation = rotation
         Widget.__init__(self)
         self.add_subvisual(self._text_visual)
         self._set_pos()
-        
+
     def on_resize(self, event):
-        """Resize event handler
+        """Resize event handler.
 
         Parameters
         ----------
@@ -36,14 +49,20 @@ class Label(Widget):
             The event.
         """
         self._set_pos()
-        
+
     def _set_pos(self):
         self._text_visual.pos = self.rect.center
-        
+
     @property
     def text(self):
+        """Text.
+
+        Returns
+        --------
+        text: str
+        """
         return self._text_visual.text
-    
+
     @text.setter
     def text(self, t):
         self._text_visual.text = t

@@ -3,7 +3,7 @@
 # Copyright (c) Vispy Development Team. All Rights Reserved.
 # Distributed under the (new) BSD License. See LICENSE.txt for more info.
 # -----------------------------------------------------------------------------
-""" Fast and failsafe GL console """
+"""Fast and failsafe GL console."""
 
 # Code translated from glumpy
 
@@ -74,7 +74,7 @@ VERTEX_SHADER = """
 uniform vec2 u_logical_scale;
 uniform float u_physical_scale;
 uniform vec4 u_color;
-uniform vec4 u_origin; 
+uniform vec4 u_origin;
 
 attribute vec2 a_position;
 attribute vec3 a_bytes_012;
@@ -140,7 +140,7 @@ void main(void)
 
 
 class Console(Widget):
-    """Fast and failsafe text console
+    """Fast and failsafe text console.
 
     Parameters
     ----------
@@ -148,14 +148,28 @@ class Console(Widget):
         Color to use.
     font_size : float
         Point size to use.
+    **kwargs : dict
+            Keyword arguments to pass to Console
     """
+
     def __init__(self, text_color='black', font_size=12., **kwargs):
+        """Fast and failsafe text console.
+
+        Parameters
+        ----------
+        text_color : instance of Color
+            Color to use.
+        font_size : float
+            Point size to use.
+        **kwargs : dict
+            Keyword arguments to pass to Console
+        """
         self._visual = ConsoleVisual(text_color, font_size)
         Widget.__init__(self, **kwargs)
         self.add_subvisual(self._visual)
-        
+
     def on_resize(self, event):
-        """Resize event handler
+        """Resize event handler.
 
         Parameters
         ----------
@@ -163,13 +177,13 @@ class Console(Widget):
             The event.
         """
         self._visual.size = self.size
-        
+
     def clear(self):
-        """Clear the console"""
+        """Clear the console."""
         self._visual.clear()
 
     def write(self, text='', wrap=True):
-        """Write text and scroll
+        """Write text and scroll.
 
         Parameters
         ----------
@@ -180,10 +194,10 @@ class Console(Widget):
             If True, long messages will be wrapped to span multiple lines.
         """
         self._visual.write(text)
-        
+
     @property
     def text_color(self):
-        """The color of the text"""
+        """Color of text."""
         return self._visual._text_color
 
     @text_color.setter
@@ -192,16 +206,43 @@ class Console(Widget):
 
     @property
     def font_size(self):
-        """The font size (in points) of the text"""
+        """Font size (in points) of text."""
         return self._visual._font_size
 
     @font_size.setter
     def font_size(self, font_size):
         self._visual._font_size = float(font_size)
 
-        
+
 class ConsoleVisual(Visual):
+    """ConsoleVisual.
+
+    Visual elements of the console. Implemented by Console.
+
+    Parameters
+    ----------
+    text_color : instance of Color
+        Color to use.
+    font_size : float
+        Point size to use.
+    **kwargs : dict
+            Keyword arguments to pass to ConsoleVisual
+    """
+
     def __init__(self, text_color, font_size, **kwargs):
+        """ConsoleVisual.
+
+        Visual elements of the console. Implemented by Console.
+
+        Parameters
+        ----------
+        text_color : instance of Color
+            Color to use.
+        font_size : float
+            Point size to use.
+        **kwargs : dict
+                Keyword arguments to pass to ConsoleVisual
+        """
         # Harcoded because of font above and shader program
         self.text_color = text_color
         self.font_size = font_size
@@ -219,15 +260,16 @@ class ConsoleVisual(Visual):
 
     @property
     def size(self):
+        """Size of ConsoleVisual."""
         return self._size
-    
+
     @size.setter
     def size(self, s):
         self._size = s
 
     @property
     def text_color(self):
-        """The color of the text"""
+        """Color of text."""
         return self._text_color
 
     @text_color.setter
@@ -236,7 +278,7 @@ class ConsoleVisual(Visual):
 
     @property
     def font_size(self):
-        """The font size (in points) of the text"""
+        """Font size (in points) of text."""
         return self._font_size
 
     @font_size.setter
@@ -244,7 +286,7 @@ class ConsoleVisual(Visual):
         self._font_size = float(font_size)
 
     def _resize_buffers(self, font_scale):
-        """Resize buffers only if necessary"""
+        """Resize buffers only if necessary."""
         new_sizes = (font_scale,) + self.size
         if new_sizes == self._current_sizes:  # don't need resize
             return
@@ -291,7 +333,7 @@ class ConsoleVisual(Visual):
         pass
 
     def clear(self):
-        """Clear the console"""
+        """Clear the console."""
         if hasattr(self, '_bytes_012'):
             self._bytes_012.fill(0)
             self._bytes_345.fill(0)
@@ -299,7 +341,7 @@ class ConsoleVisual(Visual):
         self._pending_writes = []
 
     def write(self, text='', wrap=True):
-        """Write text and scroll
+        """Write text and scroll.
 
         Parameters
         ----------
@@ -318,7 +360,7 @@ class ConsoleVisual(Visual):
         self.update()
 
     def _do_pending_writes(self):
-        """Do any pending text writes"""
+        """Do any pending text writes."""
         for text, wrap in self._pending_writes:
             # truncate in case of *really* long messages
             text = text[-self._n_cols*self._n_rows:]
@@ -339,7 +381,7 @@ class ConsoleVisual(Visual):
         self._pending_writes = []
 
     def _insert_text_buf(self, line, idx):
-        """Insert text into bytes buffers"""
+        """Insert text into bytes buffers."""
         self._bytes_012[idx] = 0
         self._bytes_345[idx] = 0
         # Crop text if necessary

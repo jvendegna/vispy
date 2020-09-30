@@ -1,3 +1,4 @@
+"""ViewBox Widget."""
 # -*- coding: utf-8 -*-
 # Copyright (c) Vispy Development Team. All Rights Reserved.
 # Distributed under the (new) BSD License. See LICENSE.txt for more info.
@@ -14,7 +15,7 @@ from ...visuals.filters import Clipper
 
 
 class ViewBox(Widget):
-    """ Provides a rectangular widget to which its subscene is rendered.
+    """Provides a rectangular widget to which its subscene is rendered.
 
     Three classes work together when using a ViewBox:
     * The :class:`SubScene` class describes a "world" coordinate system and the
@@ -37,7 +38,19 @@ class ViewBox(Widget):
     **kwargs : dict
         Extra keyword arguments to pass to `Widget`.
     """
+
     def __init__(self, camera=None, **kwargs):
+        """Init.
+
+        Parameters
+        ----------
+        camera : instance of Camera | str | None
+            The camera through which to view the SubScene. If None, then a
+            PanZoomCamera (2D interaction) is used. If str, then the string is
+            used as the argument to :func:`make_camera`.
+        **kwargs : dict
+            Extra keyword arguments to pass to `Widget`.
+        """
         self._camera = None
         self._scene = None
         Widget.__init__(self, **kwargs)
@@ -49,12 +62,12 @@ class ViewBox(Widget):
             name = str(self.name) + "_Scene"
         else:
             name = None
-            
+
         self._scene = SubScene(name=name, parent=self)
         self._scene._clipper = Clipper()
         self._scene.clip_children = True
         self.transforms.changed.connect(self._update_scene_clipper)
-        
+
         # Camera is a helper object that handles scene transformation
         # and user interaction.
         if camera is None:
@@ -68,7 +81,7 @@ class ViewBox(Widget):
 
     @property
     def camera(self):
-        """ Get/set the Camera in use by this ViewBox
+        """Get/set the Camera in use by this ViewBox.
 
         If a string is given (e.g. 'panzoom', 'turntable', 'fly'). A
         corresponding camera is selected if it already exists in the
@@ -96,7 +109,7 @@ class ViewBox(Widget):
             else:
                 # No such camera yet, create it then
                 self.camera = make_camera(cam)
-            
+
         elif isinstance(cam, BaseCamera):
             # Ensure that the camera is in the scene
             if not self.is_in_scene(cam):
@@ -109,7 +122,7 @@ class ViewBox(Widget):
                 self._camera._viewbox_set(self)
             # Update view
             cam.view_changed()
-        
+
         else:
             raise ValueError('Not a camera object.')
 
@@ -122,9 +135,9 @@ class ViewBox(Widget):
             The node.
         """
         return self.scene.is_child(node)
-    
+
     def get_scene_bounds(self, dim=None):
-        """Get the total bounds based on the visuals present in the scene
+        """Get the total bounds based on the visuals present in the scene.
 
         Parameters
         ----------
@@ -150,26 +163,25 @@ class ViewBox(Widget):
                     b = ob.bounds(axis)
                     if b is not None:
                         b = min(b), max(b)  # Ensure correct order
-                        bounds[axis] = (min(bounds[axis][0], b[0]), 
+                        bounds[axis] = (min(bounds[axis][0], b[0]),
                                         max(bounds[axis][1], b[1]))
         # Set defaults
         for axis in (0, 1, 2):
             if any(np.isinf(bounds[axis])):
                 bounds[axis] = -1, 1
-        
+
         if dim is not None:
             return bounds[dim]
         else:
             return bounds
-    
+
     @property
     def scene(self):
-        """ The root node of the scene viewed by this ViewBox.
-        """
+        """Root node of scene viewed by this ViewBox."""
         return self._scene
 
     def add(self, node):
-        """ Add an Node to the scene for this ViewBox.
+        """Add an Node to the scene for this ViewBox.
 
         This is a convenience method equivalent to
         `node.parent = viewbox.scene`
@@ -182,7 +194,7 @@ class ViewBox(Widget):
         node.parent = self.scene
 
     def on_resize(self, event):
-        """Resize event handler
+        """Resize event handler.
 
         Parameters
         ----------
@@ -193,7 +205,7 @@ class ViewBox(Widget):
             # happens during init
             return
         self._update_scene_clipper()
-        
+
     def _update_scene_clipper(self, event=None):
         tr = self.get_transform('visual', 'framebuffer')
         self._scene._clipper.bounds = tr.map(self.inner_rect)

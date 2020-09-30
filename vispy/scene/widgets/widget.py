@@ -1,3 +1,4 @@
+"""Widget."""
 # -*- coding: utf-8 -*-
 # Copyright (c) Vispy Development Team. All Rights Reserved.
 # Distributed under the (new) BSD License. See LICENSE.txt for more info.
@@ -16,7 +17,9 @@ from ...color import Color
 
 
 class Widget(Compound):
-    """ A widget takes up a rectangular space, intended for use in
+    """Widget.
+
+    A widget takes up a rectangular space, intended for use in
     a 2D pixel coordinate frame.
 
     The widget is positioned using the transform attribute (as any
@@ -43,6 +46,35 @@ class Widget(Compound):
 
     def __init__(self, pos=(0, 0), size=(10, 10), border_color=None,
                  border_width=1, bgcolor=None, padding=0, margin=0, **kwargs):
+        """Init.
+
+        A widget takes up a rectangular space, intended for use in
+        a 2D pixel coordinate frame.
+
+        The widget is positioned using the transform attribute (as any
+        node), and its extent (size) is kept as a separate property.
+
+        Parameters
+        ----------
+        pos : (x, y)
+            A 2-element tuple to specify the top left corner of the widget.
+        size : (w, h)
+            A 2-element tuple to spicify the size of the widget.
+        border_color : color
+            The color of the border.
+        border_width : float
+            The width of the border line in pixels.
+        bgcolor : color
+            The background color.
+        padding : int
+            The amount of padding in the widget
+            (i.e. the space reserved between
+            the contents and the border).
+        margin : int
+            The margin to keep outside the widget's border.
+        **kwargs : dict
+            Keyword arguments
+        """
         # For drawing border.
         # A mesh is required because GL lines cannot be drawn with predictable
         # shape across all platforms.
@@ -90,6 +122,13 @@ class Widget(Compound):
 
     @property
     def pos(self):
+        """Position.
+
+        The position of this widget
+
+        If the widget is a child of another widget, then its position is
+        assigned automatically by its parent.
+        """
         return tuple(self.transform.translate[:2])
 
     @pos.setter
@@ -106,7 +145,9 @@ class Widget(Compound):
 
     @property
     def size(self):
-        """The size (w, h) of this widget.
+        """Size.
+
+        The size (w, h) of this widget.
 
         If the widget is a child of another widget, then its size is assigned
         automatically by its parent.
@@ -130,25 +171,31 @@ class Widget(Compound):
 
     @property
     def width(self):
-        """The actual width of this widget"""
+        """Width.
+
+        The actual width of this widget.
+        """
         return self._size[0]
 
     @property
     def width_min(self):
-        """The minimum width the widget can have"""
+        """Min Width.
+
+        The minimum width the widget can have.
+        """
         return self._width_limits[0]
 
     @width_min.setter
     def width_min(self, width_min):
-        """Set the minimum height of the widget
+        """Min Width.
+
+        Set the minimum height of the widget.
 
         Parameters
         ----------
-
         height_min: float
             the minimum height of the widget
         """
-
         if width_min is None:
             self._width_limits[0] = 0
             return
@@ -161,12 +208,17 @@ class Widget(Compound):
 
     @property
     def width_max(self):
-        """The maximum width the widget can have"""
+        """Width Max.
+
+        The maximum width the widget can have.
+        """
         return self._width_limits[1]
 
     @width_max.setter
     def width_max(self, width_max):
-        """Set the maximum width of the widget.
+        """Width Max.
+
+        Set the maximum width of the widget.
 
         Parameters
         ----------
@@ -186,21 +238,26 @@ class Widget(Compound):
 
     @property
     def height(self):
-        """The actual height of the widget"""
+        """Heiht.
+
+        The actual height of the widget.
+        """
         return self._size[1]
 
     @property
     def height_min(self):
-        """The minimum height of the widget"""
+        """Min Height.
+
+        The minimum height of the widget.
+        """
         return self._height_limits[0]
 
     @height_min.setter
     def height_min(self, height_min):
-        """Set the minimum height of the widget
+        """Set the minimum height of the widget.
 
         Parameters
         ----------
-
         height_min: float
             the minimum height of the widget
         """
@@ -216,12 +273,17 @@ class Widget(Compound):
 
     @property
     def height_max(self):
-        """The maximum height of the widget"""
+        """Max Height.
+
+        The maximum height of the widget.
+        """
         return self._height_limits[1]
 
     @height_max.setter
     def height_max(self, height_max):
-        """Set the maximum height of the widget.
+        """Set Max Height.
+
+        Set the maximum height of the widget.
 
         Parameters
         ----------
@@ -240,6 +302,10 @@ class Widget(Compound):
 
     @property
     def rect(self):
+        """Rect.
+
+        Returns a rectangle of self.size
+        """
         return Rect((0, 0), self.size)
 
     @rect.setter
@@ -254,7 +320,9 @@ class Widget(Compound):
 
     @property
     def inner_rect(self):
-        """The rectangular area inside the margin, border, and padding.
+        """Inner Rect.
+
+        The rectangular area inside the margin, border, and padding.
 
         Generally widgets should avoid drawing or placing sub-widgets outside
         this rectangle.
@@ -266,7 +334,9 @@ class Widget(Compound):
 
     @property
     def stretch(self):
-        """Stretch factors (w, h) used when determining how much space to
+        """Stretch.
+
+        Stretch factors (w, h) used when determining how much space to
         allocate to this widget in a layout.
 
         If either stretch factor is None, then it will be assigned when the
@@ -292,7 +362,9 @@ class Widget(Compound):
             self.parent._update_child_widgets()
 
     def _update_clipper(self):
-        """Called whenever the clipper for this widget may need to be updated.
+        """Update Clipper.
+
+        Called whenever the clipper for this widget may need to be updated.
         """
         if self.clip_children and self._clipper is None:
             self._clipper = Clipper()
@@ -306,7 +378,9 @@ class Widget(Compound):
 
     @property
     def border_color(self):
-        """ The color of the border.
+        """Border Color.
+
+        The color of the border.
         """
         return self._border_color
 
@@ -319,7 +393,9 @@ class Widget(Compound):
 
     @property
     def bgcolor(self):
-        """ The background color of the Widget.
+        """BG Color.
+
+        The background color of the Widget.
         """
         return self._bgcolor
 
@@ -332,6 +408,10 @@ class Widget(Compound):
 
     @property
     def margin(self):
+        """Margin.
+
+        The marin of the Widget.
+        """
         return self._margin
 
     @margin.setter
@@ -344,6 +424,7 @@ class Widget(Compound):
 
     @property
     def padding(self):
+        """Return Padding of this Widget."""
         return self._padding
 
     @padding.setter
@@ -353,7 +434,10 @@ class Widget(Compound):
         self.update()
 
     def _update_line(self):
-        """ Update border line to match new shape """
+        """Update Line.
+
+        Update border line to match new shape.
+        """
         w = self._border_width
         m = self.margin
         # border is drawn within the boundaries of the widget:
@@ -408,6 +492,7 @@ class Widget(Compound):
 
     @property
     def picking(self):
+        """Return Picking."""
         return self._picking
 
     @picking.setter
@@ -428,7 +513,8 @@ class Widget(Compound):
             ch.rect = self.rect.padded(self.padding + self.margin)
 
     def add_widget(self, widget):
-        """
+        """Add Widget.
+
         Add a Widget as a managed child of this Widget.
 
         The child will be
@@ -451,7 +537,8 @@ class Widget(Compound):
         return widget
 
     def add_grid(self, *args, **kwargs):
-        """
+        """Add Grid.
+
         Create a new Grid and add it as a child widget.
 
         All arguments are given to Grid().
@@ -461,7 +548,8 @@ class Widget(Compound):
         return self.add_widget(grid)
 
     def add_view(self, *args, **kwargs):
-        """
+        """Add View.
+
         Create a new ViewBox and add it as a child widget.
 
         All arguments are given to ViewBox().
@@ -471,7 +559,8 @@ class Widget(Compound):
         return self.add_widget(view)
 
     def remove_widget(self, widget):
-        """
+        """Remove Widget.
+
         Remove a Widget as a managed child of this Widget.
 
         Parameters

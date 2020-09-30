@@ -1,3 +1,4 @@
+"""Color Bar Widget."""
 # -*- coding: utf-8 -*-
 # -----------------------------------------------------------------------------
 # Copyright (c) Vispy Development Team. All Rights Reserved.
@@ -10,7 +11,7 @@ from ...visuals import ColorBarVisual
 
 
 class ColorBarWidget(Widget):
-    """Widget containing a ColorBar
+    """Widget containing a ColorBar.
 
     Parameters
     ----------
@@ -65,11 +66,66 @@ class ColorBarWidget(Widget):
     axis_ratio : float
         ratio of minor axis to major axis
     """
+
     def __init__(self, cmap, orientation,
                  label="", label_color='black', clim=("", ""),
                  border_width=0.0, border_color="black",
                  padding=(0.2, 0.2), axis_ratio=0.05, **kwargs):
+        """Widget containing a ColorBar.
 
+        Parameters
+        ----------
+        cmap : str | vispy.color.ColorMap
+            Either the name of the ColorMap to be used from the standard
+            set of names (refer to `vispy.color.get_colormap`),
+            or a custom ColorMap object.
+            The ColorMap is used to apply a gradient on the colorbar.
+        orientation : {'left', 'right', 'top', 'bottom'}
+            The orientation of the colorbar, used for rendering. The
+            orientation can be thought of as the position of the label
+            relative to the color bar.
+
+            When the orientation is 'left' or 'right', the colorbar is
+            vertically placed. When it is 'top' or 'bottom', the colorbar is
+            horizontally placed. The colorbar automatically resizes when its
+            container's dimension changes.
+
+                * 'top': the colorbar is horizontal.
+                Color is applied from left to right.
+                Minimum corresponds to left and maximum to right.
+                Label is to the top of the colorbar
+
+                * 'bottom': Same as top, except that
+                label is to the bottom of the colorbar
+
+                * 'left': the colorbar is vertical.
+                Color is applied from bottom to top.
+                Minimum corresponds to bottom and maximum to top.
+                Label is to the left of the colorbar
+
+                * 'right': Same as left, except that the
+                label is placed to the right of the colorbar
+        label : str
+            The label that is to be drawn with the colorbar
+            that provides information about the colorbar.
+        label_color : str | vispy.color.Color
+            The color of labels. This can either be a
+            str as the color's name or an actual instace of a vipy.color.Color
+        clim : tuple (min, max)
+            the minimum and maximum values of the data that
+            is given to the colorbar. This is used to draw the scale
+            on the side of the colorbar.
+        border_width : float (in px)
+            The width of the border the colormap should have. This measurement
+            is given in pixels
+        border_color : str | vispy.color.Color
+            The color of the border of the colormap. This can either be a
+            str as the color's name or an actual instace of a vipy.color.Color
+        padding : tuple (major_axis, minor_axis) [0, 1]
+            padding with respect to the major and minor axis
+        axis_ratio : float
+            ratio of minor axis to major axis
+        """
         dummy_size = (1, 1)
         self._major_axis_padding = padding[0]
         self._minor_axis_padding = padding[1]
@@ -88,7 +144,7 @@ class ColorBarWidget(Widget):
         self._update_colorbar()
 
     def on_resize(self, event):
-        """Resize event handler
+        """Resize event handler.
 
         Parameters
         ----------
@@ -102,8 +158,7 @@ class ColorBarWidget(Widget):
         self._colorbar.size = self._calc_size()
 
     def _calc_size(self):
-        """Calculate a size
-        """
+        """Calculate a size."""
         (total_halfx, total_halfy) = (self.rect.right, self.rect.top)
         if self._colorbar.orientation in ["bottom", "top"]:
             (total_major_axis, total_minor_axis) = (total_halfx, total_halfy)
@@ -123,22 +178,43 @@ class ColorBarWidget(Widget):
 
     @property
     def cmap(self):
+        """Return cmap."""
         return self._colorbar.cmap
 
     @cmap.setter
     def cmap(self, cmap):
+        """Set cmap.
+
+        Parameters
+        ----------
+        cmap : str | vispy.color.ColorMap
+        Either the name of the ColorMap to be used from the standard
+        set of names (refer to `vispy.color.get_colormap`),
+        or a custom ColorMap object.
+        The ColorMap is used to apply a gradient on the colorbar.
+        """
         self._colorbar.cmap = cmap
 
     @property
     def label(self):
+        """Return label."""
         return self._colorbar.label
 
     @label.setter
     def label(self, label):
+        """Set Colorbar Label.
+
+        Parameters
+        ----------
+        label : str
+            The label that is to be drawn with the colorbar
+            that provides information about the colorbar.
+        """
         self._colorbar.label = label
 
     @property
     def ticks(self):
+        """Return ticks."""
         return self._colorbar.ticks
 
     @ticks.setter
@@ -147,6 +223,7 @@ class ColorBarWidget(Widget):
 
     @property
     def clim(self):
+        """Return clim."""
         return self._colorbar.clim
 
     @clim.setter
@@ -155,8 +232,7 @@ class ColorBarWidget(Widget):
 
     @property
     def border_color(self):
-        """ The color of the border around the ColorBar in pixels
-        """
+        """Color of border around this ColorBar in pixels."""
         return self._colorbar.border_color
 
     @border_color.setter
@@ -165,8 +241,7 @@ class ColorBarWidget(Widget):
 
     @property
     def border_width(self):
-        """ The width of the border around the ColorBar in pixels
-        """
+        """Width of border around this ColorBar in pixels."""
         return self._colorbar.border_width
 
     @border_width.setter
@@ -175,4 +250,5 @@ class ColorBarWidget(Widget):
 
     @property
     def orientation(self):
+        """Orientation of this ColorBar."""
         return self._colorbar.orientation

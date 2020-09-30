@@ -1,3 +1,4 @@
+"""Grid Widget."""
 # -*- coding: utf-8 -*-
 # Copyright (c) Vispy Development Team. All Rights Reserved.
 # Distributed under the (new) BSD License. See LICENSE.txt for more info.
@@ -15,7 +16,8 @@ from ...ext.cassowary import (SimplexSolver, expression,
 
 
 class Grid(Widget):
-    """
+    """Grid Widget.
+
     Widget that automatically sets the position and size of child Widgets to
     proportionally divide its internal area into a grid.
 
@@ -26,7 +28,20 @@ class Grid(Widget):
     **kwargs : dict
         Keyword arguments to pass to `Widget`.
     """
+
     def __init__(self, spacing=6, **kwargs):
+        """Grid Widget.
+
+        Widget that automatically sets the position and size of child
+        Widgets to proportionally divide its internal area into a grid.
+
+        Parameters
+        ----------
+        spacing : int
+            Spacing between widgets.
+        **kwargs : dict
+            Keyword arguments to pass to `Widget`.
+        """
         self._next_cell = [0, 0]  # row, col
         self._cells = {}
         self._grid_widgets = {}
@@ -49,7 +64,7 @@ class Grid(Widget):
         Widget.__init__(self, **kwargs)
 
     def __getitem__(self, idxs):
-        """Return an item or create it if the location is available"""
+        """Return an item or create it if the location is available."""
         if not isinstance(idxs, tuple):
             idxs = (idxs,)
         if len(idxs) == 1:
@@ -85,8 +100,9 @@ class Grid(Widget):
 
     def add_widget(self, widget=None, row=None, col=None, row_span=1,
                    col_span=1, **kwargs):
-        """
-        Add a new widget to this grid. This will cause other widgets in the
+        """Add a new widget to this grid.
+
+        This will cause other widgets in the
         grid to be resized to make room for the new widget. Can be used
         to replace a widget as well
 
@@ -149,14 +165,13 @@ class Grid(Widget):
         return widget
 
     def remove_widget(self, widget):
-        """Remove a widget from this grid
+        """Remove a widget from this grid.
 
         Parameters
         ----------
         widget : Widget
             The Widget to remove
         """
-
         self._grid_widgets = dict((key, val)
                                   for (key, val) in self._grid_widgets.items()
                                   if val[-1] != widget)
@@ -175,7 +190,6 @@ class Grid(Widget):
         col_span : int
             The number of columns to be occupied by this widget.
         """
-
         row = None
         col = None
 
@@ -240,16 +254,19 @@ class Grid(Widget):
         return self.add_widget(view, row, col, row_span, col_span)
 
     def next_row(self):
+        """Shift to next row."""
         self._next_cell = [self._next_cell[0] + 1, 0]
 
     @property
     def grid_size(self):
+        """Size of grid."""
         rvals = [widget[0]+widget[2] for widget in self._grid_widgets.values()]
         cvals = [widget[1]+widget[3] for widget in self._grid_widgets.values()]
         return max(rvals + [0]), max(cvals + [0])
 
     @property
     def layout_array(self):
+        """Array representing layout of widgets."""
         locs = -1 * np.ones(self.grid_size, int)
         for key in self._grid_widgets.keys():
             r, c, rs, cs = self._grid_widgets[key][:4]
@@ -257,6 +274,7 @@ class Grid(Widget):
         return locs
 
     def __repr__(self):
+        """Str Reputation."""
         return (('<Grid at %s:\n' % hex(id(self))) +
                 str(self.layout_array + 1) + '>')
 

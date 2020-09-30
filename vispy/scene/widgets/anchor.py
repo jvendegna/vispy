@@ -1,8 +1,10 @@
+"""Anchor."""
 from ..node import Node
 
 
 class Anchor(Node):
-    """
+    """Anchor.
+
     Anchor is a node derives parts of its transform from some other
     coordinate system in the scene.
 
@@ -21,5 +23,4 @@ class Anchor(Node):
         anchor = Anchor(parent=root, anchor_to=plot, anchor_pos=(10, 0))
         text = Text(parent=anchor,
                     text="Always points to (10,0) relative to line.")
-
     """

@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 # Copyright (c) Vispy Development Team. All Rights Reserved.
 # Distributed under the (new) BSD License. See LICENSE.txt for more info.
-"""
-The vispy.scene.widgets namespace provides a range of widgets to allow
-user interaction. Widgets are rectangular Visual objects such as buttons
+"""Vispy Scene Widgets.
+
+The vispy.scene.widgets namespace provides a range of widgets
+to allow user interaction.
+Widgets are rectangular Visual objects such as buttons
 and sliders.
 """
 __all__ = ['AxisWidget', 'Console', 'ColorBarWidget', 'Grid',
