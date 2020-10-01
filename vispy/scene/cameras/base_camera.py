@@ -286,7 +286,7 @@ class BaseCamera(Node):
             for i in range(3):
                 if bounds[i] is None:
                     bounds[i] = self._viewbox.get_scene_bounds(i)
-        
+
         # Calculate ranges and margins
         ranges = [b[1] - b[0] for b in bounds]
         margins = [(r*margin or 0.1) for r in ranges]
@@ -359,7 +359,7 @@ class BaseCamera(Node):
 
         state = state or {}
         state.update(kwargs)
-  
+
         # In first pass, process tuple keys which select subproperties. This
         # is an undocumented feature used for selective linking of camera state.
         #
@@ -473,7 +473,7 @@ class BaseCamera(Node):
         event : instance of Event
             The event.
         """
-        # Connect key events from canvas to camera. 
+        # Connect key events from canvas to camera.
         # TODO: canvas should keep track of a single node with keyboard focus.
         if event.old is not None:
             event.old.events.key_press.disconnect(self.viewbox_key_event)
@@ -522,9 +522,9 @@ class BaseCamera(Node):
             self._scene_transform = self._transform_cache.get([pre_tr, tr])
 
         # Mark the transform dynamic so that it will not be collapsed with
-        # others 
+        # others
         self._scene_transform.dynamic = True
-        
+
         # Update scene
         self._viewbox.scene.transform = self._scene_transform
         self._viewbox.update()

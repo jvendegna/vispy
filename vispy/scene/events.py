@@ -19,7 +19,7 @@ class SceneMouseEvent(Event):
     @property
     def visual(self):
         return self._visual
-    
+
     @visual.setter
     def visual(self, v):
         self._visual = v

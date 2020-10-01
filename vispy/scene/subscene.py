@@ -10,7 +10,7 @@ from .node import Node
 class SubScene(Node):
     """A Node subclass that serves as a marker and parent node for certain
     branches of the scenegraph.
-    
+
     SubScene nodes are used as the top-level node for the internal scenes of
     a canvas and a view box.
     """
