@@ -1,3 +1,4 @@
+"""Canvas."""
 # -*- coding: utf-8 -*-
 # Copyright (c) Vispy Development Team. All Rights Reserved.
 # Distributed under the (new) BSD License. See LICENSE.txt for more info.
@@ -20,7 +21,7 @@ from .widgets import Widget
 
 
 class SceneCanvas(app.Canvas, Frozen):
-    """A Canvas that automatically draws the contents of a scene
+    """A Canvas that automatically draws the contents of a scene.
 
     Parameters
     ----------
@@ -109,11 +110,13 @@ class SceneCanvas(app.Canvas, Frozen):
     This can cause problems with accessibility, as increasing the OS detection
     time or using a dedicated double-click button will not be respected.
     """
+
     def __init__(self, title='VisPy canvas', size=(800, 600), position=None,
                  show=False, autoswap=True, app=None, create_native=True,
                  vsync=False, resizable=True, decorate=True, fullscreen=False,
                  config=None, shared=None, keys=None, parent=None, dpi=None,
                  always_on_top=False, px_scale=1, bgcolor='black'):
+        """Initialize a VisPy Canvas."""
         self._scene = None
         # A default widget that follows the shape of the canvas
         self._central_widget = None
@@ -145,7 +148,9 @@ class SceneCanvas(app.Canvas, Frozen):
 
     @property
     def scene(self):
-        """ The SubScene object that represents the root node of the
+        """Sub-Scene object.
+
+        Represents the root node of the
         scene graph to be displayed.
         """
         return self._scene
@@ -163,7 +168,9 @@ class SceneCanvas(app.Canvas, Frozen):
 
     @property
     def central_widget(self):
-        """ Returns the default widget that occupies the entire area of the
+        """Central Widget.
+
+        Returns the default widget which occupies the entire area of the
         canvas.
         """
         if self._central_widget is None:
@@ -172,6 +179,7 @@ class SceneCanvas(app.Canvas, Frozen):
 
     @property
     def bgcolor(self):
+        """Background Color."""
         return Color(self._bgcolor)
 
     @bgcolor.setter
@@ -181,7 +189,7 @@ class SceneCanvas(app.Canvas, Frozen):
             self.update()
 
     def update(self, node=None):
-        """Update the scene
+        """Update the scene.
 
         Parameters
         ----------
@@ -200,7 +208,7 @@ class SceneCanvas(app.Canvas, Frozen):
             super(SceneCanvas, self).update()
 
     def on_draw(self, event):
-        """Draw handler
+        """Draw handler.
 
         Parameters
         ----------
@@ -266,7 +274,9 @@ class SceneCanvas(app.Canvas, Frozen):
         self.draw_visual(self.scene)
 
     def draw_visual(self, visual, event=None):
-        """ Draw a visual and its children to the canvas or currently active
+        """Draw a visual.
+
+        Draws a visual and its children to the canvas or currently active
         framebuffer.
 
         Parameters
@@ -327,7 +337,9 @@ class SceneCanvas(app.Canvas, Frozen):
         return order
 
     def _update_scenegraph(self, event):
-        """Called when topology of scenegraph has changed.
+        """Update scenegraph topology.
+
+        Called when topology of scenegraph has changed.
         """
         self._draw_order.clear()
         self.update()
@@ -378,7 +390,7 @@ class SceneCanvas(app.Canvas, Frozen):
         event.handled = scene_event.handled
 
     def visual_at(self, pos):
-        """Return the visual at a given position
+        """Return the visual at a given position.
 
         Parameters
         ----------
@@ -403,8 +415,7 @@ class SceneCanvas(app.Canvas, Frozen):
         return vis
 
     def _visual_bounds_at(self, pos, node=None):
-        """Find a visual whose bounding rect encompasses *pos*.
-        """
+        """Find a visual whose bounding rect encompasses *pos*."""
         if node is None:
             node = self.scene
 
@@ -417,7 +428,8 @@ class SceneCanvas(app.Canvas, Frozen):
                 not node.interactive):
             return None
 
-        # let nodes know we are picking to handle any special cases (picking meshes)
+        # let nodes know we are picking to handle any special cases
+        # (picking meshes)
         # we can't do this before this or child nodes may be considered visible
         # which would cause the above 'if' statement to pass when it shouldn't
         node.picking = True
@@ -467,7 +479,9 @@ class SceneCanvas(app.Canvas, Frozen):
         return [v for v in visuals if v is not None]
 
     def _render_picking(self, crop):
-        """Render the scene in picking mode, returning a 2D array of visual
+        """Render scene in picking mode.
+
+        Render the scene in picking mode returning a 2D array of visual
         IDs in the area specified by crop.
 
         Parameters
@@ -488,7 +502,7 @@ class SceneCanvas(app.Canvas, Frozen):
         return id_
 
     def on_resize(self, event):
-        """Resize handler
+        """Resize handler.
 
         Parameters
         ----------
@@ -504,7 +518,7 @@ class SceneCanvas(app.Canvas, Frozen):
             self.context.set_viewport(0, 0, *self.physical_size)
 
     def on_close(self, event):
-        """Close event handler
+        """Close event handler.
 
         Parameters
         ----------
@@ -518,7 +532,9 @@ class SceneCanvas(app.Canvas, Frozen):
 
     # -------------------------------------------------- transform handling ---
     def push_viewport(self, viewport):
-        """ Push a viewport (x, y, w, h) on the stack. Values must be integers
+        """Push a viewport (x, y, w, h) on the stack.
+
+        Values must be integers
         relative to the active framebuffer.
 
         Parameters
@@ -545,8 +561,7 @@ class SceneCanvas(app.Canvas, Frozen):
         self._update_transforms()
 
     def pop_viewport(self):
-        """ Pop a viewport from the stack.
-        """
+        """Pop a viewport from the stack."""
         vp = self._vp_stack.pop()
         # Activate latest
         if len(self._vp_stack) > 0:
@@ -558,7 +573,7 @@ class SceneCanvas(app.Canvas, Frozen):
         return vp
 
     def push_fbo(self, fbo, offset, csize):
-        """ Push an FBO on the stack.
+        """Push an FBO on the stack.
 
         This activates the framebuffer and causes subsequent rendering to be
         written to the framebuffer rather than the canvas's back buffer. This
@@ -588,8 +603,7 @@ class SceneCanvas(app.Canvas, Frozen):
         self._update_transforms()
 
     def pop_fbo(self):
-        """ Pop an FBO from the stack.
-        """
+        """Pop an FBO from the stack."""
         fbo = self._fb_stack.pop()
         fbo[0].deactivate()
         self.pop_viewport()
@@ -601,7 +615,9 @@ class SceneCanvas(app.Canvas, Frozen):
         return fbo
 
     def _current_framebuffer(self):
-        """ Return (fbo, origin, canvas_size) for the current
+        """Check current framebufer stack size.
+
+        Return (fbo, origin, canvas_size) for the current
         FBO on the stack, or for the canvas if there is no FBO.
         """
         if len(self._fb_stack) == 0:
@@ -610,8 +626,11 @@ class SceneCanvas(app.Canvas, Frozen):
             return self._fb_stack[-1]
 
     def _update_transforms(self):
-        """Update the canvas's TransformSystem to correct for the current
-        canvas size, framebuffer, and viewport.
+        """Update the canvas's TransformSystem.
+
+        Updates canvas's TransformSystem to
+        correct for the current canvas
+        size, framebuffer, and viewport.
         """
         if len(self._fb_stack) == 0:
             fb_size = fb_rect = None

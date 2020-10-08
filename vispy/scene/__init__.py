@@ -2,7 +2,9 @@
 # Copyright (c) Vispy Development Team. All Rights Reserved.
 # Distributed under the (new) BSD License. See LICENSE.txt for more info.
 """
-The vispy.scene subpackage provides high-level, flexible, and easy to use
+The vispy.scene subpackage.
+
+Provides high-level, flexible, and easy to use
 functionality for creating scenes composed of multiple visual objects.
 
 Overview
