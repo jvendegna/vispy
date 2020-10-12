@@ -1,3 +1,4 @@
+"""Node Tests."""
 # -*- coding: utf-8 -*-
 from vispy.scene.node import Node
 from vispy.testing import (requires_application, TestingCanvas,
@@ -7,16 +8,26 @@ import numpy as np
 
 
 class EventCheck(object):
+    """An Event Check with an emitter callback.
+
+    Parameters
+    ----------
+    object
+    """
+
     def __init__(self, emitter):
+        """Initialize EventCheck."""
         self._events = []
         self.emitter = emitter
         emitter.connect(self.callback)
 
     def callback(self, event):
+        """Event callback."""
         self._events.append(event)
 
     @property
     def events(self):
+        """Get events and reinitialize event array."""
         ev = self._events
         self._events = []
         return ev
@@ -24,6 +35,7 @@ class EventCheck(object):
 
 @requires_application()
 def test_topology():
+    """Test Scene Topology."""
     c = TestingCanvas()
     assert c.scene.canvas is c
     with raises(AttributeError):
@@ -81,7 +93,7 @@ def test_topology():
 
 
 def test_transforms():
-    # test transform mapping between nodes
+    """Test transform mapping between nodes."""
     root = Node()
     n1 = Node(parent=root)
     n2 = Node(parent=n1)

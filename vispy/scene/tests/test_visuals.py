@@ -1,10 +1,11 @@
+"""Test Visuals."""
 from vispy.scene import visuals, Node
 from vispy.scene.visuals import VisualNode
 import vispy.visuals
 
 
 def test_docstrings():
-    # test that docstring insertions worked for all Visual+Node subclasses
+    """Test that docstring insertions worked for all Visual+Node subclasses."""
     for name in dir(visuals):
         obj = getattr(visuals, name)
         if isinstance(obj, type) and issubclass(obj, Node):
@@ -15,7 +16,7 @@ def test_docstrings():
 
 
 def test_visual_node_generation():
-    # test that all Visual classes also have Visual+Node classes
+    """Test that all Visual classes also have Visual+Node classes."""
     visuals = []
     for name in dir(vispy.visuals):
         obj = getattr(vispy.visuals, name)
