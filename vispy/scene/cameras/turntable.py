@@ -1,3 +1,4 @@
+"""Turntable Camera."""
 # -*- coding: utf-8 -*-
 # Copyright (c) Vispy Development Team. All Rights Reserved.
 # Distributed under the (new) BSD License. See LICENSE.txt for more info.
@@ -11,8 +12,7 @@ from .perspective import Base3DRotationCamera
 
 
 class TurntableCamera(Base3DRotationCamera):
-    """ 3D camera class that orbits around a center point while
-    maintaining a view on a center point.
+    """3D camera class orbits and maintains view on a center point.
 
     For this camera, the ``scale_factor`` indicates the zoom level, and
     the ``center`` indicates the position to put at the center of the
@@ -56,6 +56,7 @@ class TurntableCamera(Base3DRotationCamera):
 
     def __init__(self, fov=45.0, elevation=30.0, azimuth=30.0, roll=0.0,
                  distance=None, translate_speed=1.0, **kwargs):
+        """Init TurntableCamera."""
         super(TurntableCamera, self).__init__(fov=fov, **kwargs)
 
         # Set camera attributes
@@ -67,9 +68,7 @@ class TurntableCamera(Base3DRotationCamera):
 
     @property
     def elevation(self):
-        """ The angle of the camera in degrees above the horizontal (x, z)
-        plane.
-        """
+        """Angle of the camera in degrees above the horizontal (x, z) plane."""
         return self._elevation
 
     @elevation.setter
@@ -80,8 +79,9 @@ class TurntableCamera(Base3DRotationCamera):
 
     @property
     def azimuth(self):
-        """ The angle of the camera in degrees around the y axis. An angle of
-        0 places the camera within the (y, z) plane.
+        """Angle of the camera in degrees around the y axis.
+
+        An angle of 0 places the camera within the (y, z) plane.
         """
         return self._azimuth
 
@@ -97,8 +97,9 @@ class TurntableCamera(Base3DRotationCamera):
 
     @property
     def roll(self):
-        """ The angle of the camera in degrees around the z axis. An angle of
-        0 places puts the camera upright.
+        """Angle of the camera in degrees around the z axis.
+
+        An angle of 0 places puts the camera upright.
         """
         return self._roll
 
@@ -113,7 +114,7 @@ class TurntableCamera(Base3DRotationCamera):
         self.view_changed()
 
     def orbit(self, azim, elev):
-        """ Orbits the camera around the center position.
+        """Orbits the camera around the center position.
 
         Parameters
         ----------
@@ -127,7 +128,7 @@ class TurntableCamera(Base3DRotationCamera):
         self.view_changed()
 
     def _update_rotation(self, event):
-        """Update rotation parmeters based on mouse movement"""
+        """Update rotation parmeters based on mouse movement."""
         p1 = event.mouse_event.press_event.pos
         p2 = event.mouse_event.pos
         if self._event_value is None:
@@ -136,7 +137,7 @@ class TurntableCamera(Base3DRotationCamera):
         self.elevation = self._event_value[1] + (p2 - p1)[1] * 0.5
 
     def _get_rotation_tr(self):
-        """Return a rotation matrix based on camera parameters"""
+        """Return a rotation matrix based on camera parameters."""
         up, forward, right = self._get_dim_vectors()
         return np.dot(
             transforms.rotate(self.elevation, -right),
@@ -144,7 +145,7 @@ class TurntableCamera(Base3DRotationCamera):
         )
 
     def _dist_to_trans(self, dist):
-        """Convert mouse x, y movement into x, y, z translations"""
+        """Convert mouse x, y movement into x, y, z translations."""
         rae = np.array([self.roll, self.azimuth, self.elevation]) * np.pi / 180
         sro, saz, sel = np.sin(rae)
         cro, caz, cel = np.cos(rae)

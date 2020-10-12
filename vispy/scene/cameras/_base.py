@@ -1,3 +1,4 @@
+"""Camera Factory."""
 # -*- coding: utf-8 -*-
 # Copyright (c) Vispy Development Team. All Rights Reserved.
 # Distributed under the (new) BSD License. See LICENSE.txt for more info.
@@ -10,7 +11,9 @@ from .fly import FlyCamera
 
 
 def make_camera(cam_type, *args, **kwargs):
-    """ Factory function for creating new cameras using a string name.
+    """Create New Camera.
+
+    Factory function for creating new cameras using a string name.
 
     Parameters
     ----------

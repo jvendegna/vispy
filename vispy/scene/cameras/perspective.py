@@ -13,8 +13,7 @@ from ...visuals.transforms import MatrixTransform
 
 
 class PerspectiveCamera(BaseCamera):
-    """ Base class for 3D cameras supporting orthographic and
-    perspective projections.
+    """Base class for 3D cameras supporting orthographic and perspective projections.
 
     Parameters
     ----------
@@ -46,8 +45,8 @@ class PerspectiveCamera(BaseCamera):
             self.center = center
 
     def viewbox_mouse_event(self, event):
-        """ The ViewBox received a mouse event; update transform
-        accordingly.
+        """The ViewBox received a mouse event; update transform accordingly.
+
         Default implementation adjusts scale factor when scolling.
 
         Parameters
@@ -65,7 +64,7 @@ class PerspectiveCamera(BaseCamera):
 
     @property
     def scale_factor(self):
-        """ The measure for the scale or range that the camera should cover
+        """The measure for the scale or range that the camera should cover.
 
         For the PanZoomCamera and TurnTableCamera this translates to
         zooming: set to smaller values to zoom in.
@@ -79,13 +78,11 @@ class PerspectiveCamera(BaseCamera):
 
     @property
     def near_clip_distance(self):
-        """ The distance of the near clipping plane from the camera's position.
-        """
+        """The distance of the near clipping plane from the camera's position."""
         return self._near_clip_distance
 
     def _set_range(self, init):
-        """ Reset the camera view using the known limits.
-        """
+        """Reset the camera view using the known limits."""
 
         if init and (self._scale_factor is not None):
             return  # We don't have to set our scale factor
@@ -173,16 +170,19 @@ class PerspectiveCamera(BaseCamera):
 
 
 class Base3DRotationCamera(PerspectiveCamera):
-    """Base class for TurntableCamera and ArcballCamera"""
+    """Base class for TurntableCamera and ArcballCamera."""
 
     def __init__(self, fov=0.0, **kwargs):
+        """Init."""
         super(Base3DRotationCamera, self).__init__(fov=fov, **kwargs)
         self._actual_distance = 0.0
         self._event_value = None
 
     @property
     def distance(self):
-        """ The user-set distance. If None (default), the distance is
+        """User-set distance.
+
+        If None (default), the distance is
         internally calculated from the scale factor and fov.
         """
         return self._distance
@@ -196,9 +196,7 @@ class Base3DRotationCamera(PerspectiveCamera):
         self.view_changed()
 
     def viewbox_mouse_event(self, event):
-        """
-        The viewbox received a mouse event; update transform
-        accordingly.
+        """Viewbox received a mouse event; update transform accordingly.
 
         Parameters
         ----------
@@ -264,8 +262,7 @@ class Base3DRotationCamera(PerspectiveCamera):
                 self.fov = min(180.0, max(0.0, fov))
 
     def _update_camera_pos(self):
-        """ Set the camera position and orientation"""
-
+        """Set the camera position and orientation."""
         # transform will be updated several times; do not update camera
         # transform until we are done.
         ch_em = self.events.transform_change
@@ -300,6 +297,7 @@ class Base3DRotationCamera(PerspectiveCamera):
         return np.array(up), np.array(forward), right
 
     def _update_projection_transform(self, fx, fy):
+        """Update camera postion based on projection transformation."""
         d = self.depth_value
         if self._fov == 0:
             self._projection.set_ortho(-0.5*fx, 0.5*fx, -0.5*fy, 0.5*fy, -d, d)
@@ -317,13 +315,13 @@ class Base3DRotationCamera(PerspectiveCamera):
         self._update_camera_pos()
 
     def _update_rotation(self, event):
-        """Update rotation parmeters based on mouse movement"""
+        """Update rotation parmeters based on mouse movement."""
         raise NotImplementedError
 
     def _rotate_tr(self):
-        """Rotate the transformation matrix based on camera parameters"""
+        """Rotate the transformation matrix based on camera parameters."""
         raise NotImplementedError
 
     def _dist_to_trans(self, dist):
-        """Convert mouse x, y movement into x, y, z translations"""
+        """Convert mouse x, y movement into x, y, z translations."""
         raise NotImplementedError
